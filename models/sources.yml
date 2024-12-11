@@ -1,0 +1,5 @@
+sources:
+  - name: LANDING_ZONE
+    schema: LZ_WEATHER_SCHEMA
+    tables:
+      - name: LZ_WEATHER_TBL
