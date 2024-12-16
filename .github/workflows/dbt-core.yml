@@ -67,7 +67,7 @@ jobs:
 
     - name: Run S3 to Snowflake Flusher Script
       run: |
-        python WeatherStackProject/weather/s3_to_sf_flusher.py
+        python -m weather.s3_to_sf_flusher
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
