@@ -38,9 +38,17 @@ jobs:
           echo "SNOWFLAKE_SCHEMA=${{ secrets.SNOWFLAKE_SCHEMA }}" >> $GITHUB_ENV
           echo "SNOWFLAKE_THREADS=4" >> $GITHUB_ENV
 
-      # Step 5: Run dbt build command with the environment variables
+      # Step 5: Run dbt build with environment variables
       - name: Run dbt build
         run: |
           dbt build \
             --target snowflake \
-            --vars "{account: $SNOWFLAKE_ACCOUNT, user: $SNOWFLAKE_USER, password: $SNOWFLAKE_PASSWORD, warehouse: $SNOWFLAKE_WAREHOUSE, database: $SNOWFLAKE_DATABASE, schema: $SNOWFLAKE_SCHEMA, threads: $SNOWFLAKE_THREADS}"
+            --vars '
+              account: $SNOWFLAKE_ACCOUNT
+              user: $SNOWFLAKE_USER
+              password: $SNOWFLAKE_PASSWORD
+              warehouse: $SNOWFLAKE_WAREHOUSE
+              database: $SNOWFLAKE_DATABASE
+              schema: $SNOWFLAKE_SCHEMA
+              threads: $SNOWFLAKE_THREADS
+            '
