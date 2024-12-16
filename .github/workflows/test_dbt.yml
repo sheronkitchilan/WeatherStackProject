@@ -41,6 +41,4 @@ jobs:
       # Step 5: Run dbt commands without --profiles-dir
       - name: Run dbt commands
         run: |
-          dbt run \
-            --target snowflake \
-            --vars "{account: $SNOWFLAKE_ACCOUNT, user: $SNOWFLAKE_USER, password: $SNOWFLAKE_PASSWORD, warehouse: $SNOWFLAKE_WAREHOUSE, database: $SNOWFLAKE_DATABASE, schema: $SNOWFLAKE_SCHEMA, threads: $SNOWFLAKE_THREADS}"
+          dbt run -h"
