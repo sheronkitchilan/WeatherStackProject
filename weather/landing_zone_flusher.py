@@ -3,7 +3,7 @@ import boto3
 import io
 from datetime import datetime
 from weather.s3_to_sf_flusher import SnowflakeServiceHandler
-from weather_api import WeatherAPIHandler as wa
+from weather.weather_api import WeatherAPIHandler as wa
 from weather import WeatherInitiator as wi
 import pandas as pd
 
