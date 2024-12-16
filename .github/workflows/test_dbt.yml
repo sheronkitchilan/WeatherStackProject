@@ -41,4 +41,4 @@ jobs:
       # Step 5: Run dbt commands without --profiles-dir
       - name: Run dbt commands
         run: |
-          dbt run -h"
+          dbt run -h
