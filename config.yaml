@@ -1,0 +1,17 @@
+secret_name: "weather_data_api_key_2"
+sf_secret_name: "sf_configuration"
+sf_region_name: "us-east-2"
+region_name: "us-east-2"
+locations:
+  - Sri Lanka
+  - New York
+  - London
+  - Tokyo
+  - Sydney
+output_file: "weather_data_multiple_locations"
+s3_bucket: "sheron-weather-data-bucket"
+snowflake_stage : "landing_stage"
+target_table: 'LANDING_ZONE.LZ_WEATHER_SCHEMA.LZ_WEATHER_TBL'
+
+
+
