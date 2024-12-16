@@ -1,22 +1,21 @@
 name: Run dbt Job on Snowflake
 
-# Trigger the workflow on pushing to the 'main' branch, or manually trigger it.
 on:
   push:
     branches:
-      - main  # Runs on push to the main branch
-  workflow_dispatch:  # Allows manual triggering of the workflow
+      - main  # Trigger workflow on push to main branch
+  workflow_dispatch:  # Allows manual triggering
 
 jobs:
   dbt-run:
-    runs-on: ubuntu-latest  # GitHub Actions runs on Ubuntu
+    runs-on: ubuntu-latest
 
     steps:
       # Step 1: Checkout code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Python environment (use a version compatible with dbt)
+      # Step 2: Set up Python environment
       - name: Set up Python 3.9
         uses: actions/setup-python@v3
         with:
@@ -28,9 +27,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install dbt-snowflake
 
-      # Step 4: Set up Snowflake credentials (profile configuration)
-      - name: Configure Snowflake credentials
+      # Step 4: Create profiles directory if it doesn't exist
+      - name: Create .dbt directory and configure credentials
         run: |
+          mkdir -p ~/.dbt  # Create .dbt directory if it doesn't exist
           echo "-- This is a generated profiles.yml file" > ~/.dbt/profiles.yml
           echo "snowflake:" >> ~/.dbt/profiles.yml
           echo "  target: dev" >> ~/.dbt/profiles.yml
@@ -50,6 +50,6 @@ jobs:
       - name: Run dbt commands
         run: |
           dbt debug    # Check if the connection works
-          dbt deps     # Install dbt dependencies (if needed)
+          dbt deps     # Install dbt dependencies
           dbt run      # Run dbt models
-          dbt test     # Run dbt tests (optional)
+          dbt test     # Optionally run dbt tests
