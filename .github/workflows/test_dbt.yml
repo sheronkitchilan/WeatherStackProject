@@ -27,7 +27,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install dbt-snowflake
 
-      # Step 4: Set Snowflake environment variables (excluding ROLE)
+      # Step 4: Set Snowflake environment variables
       - name: Set Snowflake credentials
         run: |
           echo "SNOWFLAKE_ACCOUNT=${{ secrets.SNOWFLAKE_ACCOUNT }}" >> $GITHUB_ENV
@@ -38,10 +38,9 @@ jobs:
           echo "SNOWFLAKE_SCHEMA=${{ secrets.SNOWFLAKE_SCHEMA }}" >> $GITHUB_ENV
           echo "SNOWFLAKE_THREADS=4" >> $GITHUB_ENV
 
-      # Step 5: Run dbt commands with environment variables
+      # Step 5: Run dbt commands without --profiles-dir
       - name: Run dbt commands
         run: |
           dbt run \
             --target snowflake \
-            --profiles-dir $HOME/.dbt \
             --vars "{account: $SNOWFLAKE_ACCOUNT, user: $SNOWFLAKE_USER, password: $SNOWFLAKE_PASSWORD, warehouse: $SNOWFLAKE_WAREHOUSE, database: $SNOWFLAKE_DATABASE, schema: $SNOWFLAKE_SCHEMA, threads: $SNOWFLAKE_THREADS}"
