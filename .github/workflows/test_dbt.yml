@@ -49,7 +49,4 @@ jobs:
       # Step 5: Run dbt commands
       - name: Run dbt commands
         run: |
-          dbt debug    # Check if the connection works
-          dbt deps     # Install dbt dependencies
-          dbt run      # Run dbt models
-          dbt test     # Optionally run dbt tests
+          dbt build
