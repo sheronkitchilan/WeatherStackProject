@@ -29,6 +29,14 @@ jobs:
         SNOWFLAKE_DATABASE: ${{ secrets.SNOWFLAKE_DATABASE }}
         SNOWFLAKE_WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
         SNOWFLAKE_SCHEMA: ${{ secrets.SNOWFLAKE_SCHEMA }}
+      run: |
+        echo "Exporting secrets for DBT..."
+        echo "SNOWFLAKE_ACCOUNT=${SNOWFLAKE_ACCOUNT}" >> $GITHUB_ENV
+        echo "SNOWFLAKE_USER=${SNOWFLAKE_USER}" >> $GITHUB_ENV
+        echo "SNOWFLAKE_PASSWORD=${SNOWFLAKE_PASSWORD}" >> $GITHUB_ENV
+        echo "SNOWFLAKE_DATABASE=${SNOWFLAKE_DATABASE}" >> $GITHUB_ENV
+        echo "SNOWFLAKE_WAREHOUSE=${SNOWFLAKE_WAREHOUSE}" >> $GITHUB_ENV
+        echo "SNOWFLAKE_SCHEMA=${SNOWFLAKE_SCHEMA}" >> $GITHUB_ENV
 
     - name: Validate DBT Setup
       run: dbt debug
