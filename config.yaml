@@ -9,6 +9,7 @@ locations:
   - Tokyo
   - Sydney
   - Canada
+  - South Africa
 output_file: "weather_data_multiple_locations"
 s3_bucket: "sheron-weather-data-bucket"
 snowflake_stage : "landing_stage"
