@@ -1,4 +1,4 @@
-my_project:
+default:
   outputs:
     dev:
       type: snowflake
