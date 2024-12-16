@@ -16,10 +16,14 @@ jobs:
       with:
         python-version: '3.9'
 
-    - name: Install DBT
+    - name: Install Dependencies from requirements.txt
       run: |
         python -m pip install --upgrade pip
-        pip install dbt-core dbt-snowflake
+        pip install -r requirements.txt  # Install dependencies from the requirements.txt file
+
+    - name: Install DBT
+      run: |
+        pip install dbt-core dbt-snowflake  # Replace 'dbt-snowflake' with your DBT adapter if needed
 
     - name: Export Environment Variables
       env:
@@ -38,10 +42,32 @@ jobs:
         echo "SNOWFLAKE_WAREHOUSE=${SNOWFLAKE_WAREHOUSE}" >> $GITHUB_ENV
         echo "SNOWFLAKE_SCHEMA=${SNOWFLAKE_SCHEMA}" >> $GITHUB_ENV
 
+    - name: Run Landing Zone Flusher Script
+      run: |
+        python WeatherStackProject/weather/landing_zone_flusher.py
+      env:
+        SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+        SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+        SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+        SNOWFLAKE_DATABASE: ${{ secrets.SNOWFLAKE_DATABASE }}
+        SNOWFLAKE_WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
+        SNOWFLAKE_SCHEMA: ${{ secrets.SNOWFLAKE_SCHEMA }}
+
+    - name: Run S3 to Snowflake Flusher Script
+      run: |
+        python WeatherStackProject/weather/s3_to_sf_flusher.py
+      env:
+        SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+        SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+        SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+        SNOWFLAKE_DATABASE: ${{ secrets.SNOWFLAKE_DATABASE }}
+        SNOWFLAKE_WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
+        SNOWFLAKE_SCHEMA: ${{ secrets.SNOWFLAKE_SCHEMA }}
+
     - name: Validate DBT Setup
       run: dbt debug
 
-    - name: Install Dependencies
+    - name: Install DBT Dependencies
       run: dbt deps
 
     - name: Run DBT Models
