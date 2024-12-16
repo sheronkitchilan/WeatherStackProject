@@ -25,7 +25,7 @@ jobs:
     - name: Install DBT Core
       run: |
         python -m pip install --upgrade pip
-        pip install dbt-core dbt-[YOUR_ADAPTER] # Replace [YOUR_ADAPTER] with e.g., snowflake, bigquery, redshift, etc.
+        pip install dbt-core dbt-snowflake # Replace [YOUR_ADAPTER] with e.g., snowflake, bigquery, redshift, etc.
 
     # Step 4: Set up DBT profiles.yml
     - name: Set up DBT profiles.yml
