@@ -25,6 +25,14 @@ jobs:
       run: |
         pip install dbt-core dbt-snowflake  # Replace 'dbt-snowflake' with your DBT adapter if needed
 
+    # Configure AWS credentials
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_DEFAULT_REGION }}  # Optional if your scripts specify the region
+
     - name: Export Environment Variables
       env:
         SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
@@ -42,10 +50,14 @@ jobs:
         echo "SNOWFLAKE_WAREHOUSE=${SNOWFLAKE_WAREHOUSE}" >> $GITHUB_ENV
         echo "SNOWFLAKE_SCHEMA=${SNOWFLAKE_SCHEMA}" >> $GITHUB_ENV
 
+    # Use AWS CLI for Landing Zone Flusher Script
     - name: Run Landing Zone Flusher Script
       run: |
         python -m weather.landing_zone_flusher
       env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
         SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
         SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
         SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
@@ -57,6 +69,9 @@ jobs:
       run: |
         python WeatherStackProject/weather/s3_to_sf_flusher.py
       env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
         SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
         SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
         SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
