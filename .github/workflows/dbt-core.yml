@@ -44,7 +44,7 @@ jobs:
 
     - name: Run Landing Zone Flusher Script
       run: |
-        python landing_zone_flusher.py
+        python -m weather.landing_zone_flusher
       env:
         SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
         SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
