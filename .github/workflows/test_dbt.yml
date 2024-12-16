@@ -1,0 +1,55 @@
+name: Run dbt Job with Snowflake
+
+on:
+  push:
+    branches:
+      - main  # Run on push to the main branch
+
+  workflow_dispatch:  # Allows manual triggering of the workflow
+
+jobs:
+  dbt-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Python
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.9
+
+      # Step 3: Install dbt and the Snowflake adapter
+      - name: Install dbt and Snowflake Adapter
+        run: |
+          python -m pip install --upgrade pip
+          pip install dbt-snowflake
+
+      # Step 4: Configure Snowflake credentials
+      - name: Set up Snowflake credentials
+        run: |
+          echo "-- This is a generated profiles.yml file" > ~/.dbt/profiles.yml
+          echo "snowflake:" >> ~/.dbt/profiles.yml
+          echo "  target: dev" >> ~/.dbt/profiles.yml
+          echo "  outputs:" >> ~/.dbt/profiles.yml
+          echo "    dev:" >> ~/.dbt/profiles.yml
+          echo "      type: snowflake" >> ~/.dbt/profiles.yml
+          echo "      account: ${{ secrets.SNOWFLAKE_ACCOUNT }}" >> ~/.dbt/profiles.yml
+          echo "      user: ${{ secrets.SNOWFLAKE_USER }}" >> ~/.dbt/profiles.yml
+          echo "      password: ${{ secrets.SNOWFLAKE_PASSWORD }}" >> ~/.dbt/profiles.yml
+          echo "      role: ${{ secrets.SNOWFLAKE_ROLE }}" >> ~/.dbt/profiles.yml
+          echo "      warehouse: ${{ secrets.SNOWFLAKE_WAREHOUSE }}" >> ~/.dbt/profiles.yml
+          echo "      database: ${{ secrets.SNOWFLAKE_DATABASE }}" >> ~/.dbt/profiles.yml
+          echo "      schema: ${{ secrets.SNOWFLAKE_SCHEMA }}" >> ~/.dbt/profiles.yml
+          echo "      threads: 4" >> ~/.dbt/profiles.yml
+
+      # Step 5: Run dbt commands (debugging, install dependencies, run models)
+      - name: Run dbt commands
+        run: |
+          dbt debug  # Test the connection
+          dbt deps   # Install dependencies
+          dbt run    # Run the dbt models
+          dbt test   # Run dbt tests
