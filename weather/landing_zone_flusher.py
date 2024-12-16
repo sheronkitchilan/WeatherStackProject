@@ -39,7 +39,7 @@ class WeatherExtractorServiceHandler:
     def get_service(self):
         # Load configuration
         try:
-            with open("../config.yaml", "r") as config_file:
+            with open("config.yaml", "r") as config_file:
                 config = yaml.safe_load(config_file)
         except Exception as e:
             print(f"Error loading configuration: {e}")
