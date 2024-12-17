@@ -3,7 +3,7 @@ name: DBT Workflow
 on:
   workflow_dispatch:  # Enables manual triggering
   schedule:
-    - cron: '*/5 * * * *'  # Runs every 5 minutes
+    - cron: '0 */12 * * *'  # Runs every 5 minutes
     
 jobs:
   dbt:
